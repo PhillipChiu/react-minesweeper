@@ -285,23 +285,6 @@ export default function App({ random = Math.random }: AppProps) {
             </button>
           </div>
 
-          <button
-            className={`flag-mode-button${flagMode ? " is-active" : ""}`}
-            type="button"
-            aria-label={`Flag mode ${flagMode ? "on" : "off"}`}
-            aria-pressed={flagMode}
-            onClick={() => setFlagMode((enabled) => !enabled)}
-          >
-            <span className="flag-mode-icon" aria-hidden="true">
-              ⚑
-            </span>
-            <span className="flag-mode-text">
-              <strong>Flag mode</strong>
-              <span>{flagMode ? "Tap a tile to flag it" : "Off · tap to turn on"}</span>
-            </span>
-            <span className="mode-switch" aria-hidden="true" />
-          </button>
-
           <div className="how-to-play">
             <h2>How to play</h2>
             <ul>
@@ -321,7 +304,7 @@ export default function App({ random = Math.random }: AppProps) {
                 <span className="instruction-icon flag-icon" aria-hidden="true">
                   ⚑
                 </span>
-                Right-click or use flag mode.
+                Tap Flag mode above the board, or right-click a tile.
               </li>
             </ul>
           </div>
@@ -384,6 +367,25 @@ export default function App({ random = Math.random }: AppProps) {
             <span className="message-indicator" aria-hidden="true" />
             {gameMessage(game.status)}
           </p>
+
+          <button
+            className={`flag-mode-button${flagMode ? " is-active" : ""}`}
+            type="button"
+            aria-label={`Flag mode ${flagMode ? "on" : "off"}`}
+            aria-pressed={flagMode}
+            onClick={() => setFlagMode((enabled) => !enabled)}
+          >
+            <span className="flag-mode-icon" aria-hidden="true">
+              ⚑
+            </span>
+            <span className="flag-mode-text">
+              <strong>Flag mode</strong>
+              <span>
+                {flagMode ? "Tap a tile to flag it" : "Off · tap to turn on"}
+              </span>
+            </span>
+            <span className="mode-switch" aria-hidden="true" />
+          </button>
 
           <div className="board-card">
             <div className="board-card-topline">
@@ -472,7 +474,10 @@ export default function App({ random = Math.random }: AppProps) {
             </div>
             <p className="board-help" id="board-help">
               <span aria-hidden="true">⌨</span>
-              Arrow keys move · Enter or Space reveals · F flags · right-click flags
+              {flagMode
+                ? "Flag mode on · tap a covered tile to flag it · arrow keys move · " +
+                  "Enter/Space flags · F/right-click also flags"
+                : "Tap a covered tile to reveal · arrow keys move · Enter/Space reveals · F/right-click flags"}
             </p>
           </div>
 

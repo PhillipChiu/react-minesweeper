@@ -30,22 +30,50 @@ describe("Minesweeper interface", () => {
   it("supports touch-friendly flag mode without revealing or starting the timer", () => {
     render(<App random={() => 0} />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Flag mode off" }));
+    const flagModeButton = screen.getByRole("button", {
+      name: "Flag mode off",
+    });
+    expect(flagModeButton.closest(".board-panel")).not.toBeNull();
+    expect(screen.getByText(/Tap a covered tile to reveal/)).toBeInTheDocument();
+
+    fireEvent.click(flagModeButton);
     const firstCell = screen.getByRole("gridcell", {
       name: "Row 1, column 1, hidden",
     });
     fireEvent.click(firstCell);
 
-    expect(screen.getByRole("button", { name: "Flag mode on" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
+    expect(
+      screen.getByRole("button", { name: "Flag mode on" }),
+    ).toHaveAttribute("aria-pressed", "true");
     expect(
       screen.getByRole("gridcell", { name: "Row 1, column 1, flagged" }),
     ).toHaveAttribute("data-state", "flagged");
+    const flagHelp = screen.getByText(
+      /Flag mode on · tap a covered tile to flag it/,
+    );
+    expect(flagHelp).toBeInTheDocument();
+    expect(flagHelp).toHaveTextContent("arrow keys move · Enter/Space flags");
     expect(screen.getByLabelText("Remaining mines")).toHaveTextContent("9");
     expect(screen.getByLabelText("Elapsed time")).toHaveTextContent("00:00");
     expect(screen.getByText(/Choose a tile to begin/)).toBeInTheDocument();
+  });
+
+  it("toggles flag mode with the keyboard", async () => {
+    const user = userEvent.setup();
+    render(<App random={() => 0} />);
+    const flagModeButton = screen.getByRole("button", {
+      name: "Flag mode off",
+    });
+
+    flagModeButton.focus();
+    await user.keyboard("{Enter}");
+
+    expect(
+      screen.getByRole("button", { name: "Flag mode on" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    expect(
+      screen.getByText(/Flag mode on · tap a covered tile to flag it/),
+    ).toBeInTheDocument();
   });
 
   it("flags a tile with the mouse context menu", () => {
