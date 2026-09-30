@@ -48,9 +48,11 @@ describe("Minesweeper interface", () => {
     expect(
       screen.getByRole("gridcell", { name: "Row 1, column 1, flagged" }),
     ).toHaveAttribute("data-state", "flagged");
-    expect(
-      screen.getByText(/Flag mode on · tap a covered tile to flag it/),
-    ).toBeInTheDocument();
+    const flagHelp = screen.getByText(
+      /Flag mode on · tap a covered tile to flag it/,
+    );
+    expect(flagHelp).toBeInTheDocument();
+    expect(flagHelp).toHaveTextContent("arrow keys move · Enter/Space flags");
     expect(screen.getByLabelText("Remaining mines")).toHaveTextContent("9");
     expect(screen.getByLabelText("Elapsed time")).toHaveTextContent("00:00");
     expect(screen.getByText(/Choose a tile to begin/)).toBeInTheDocument();

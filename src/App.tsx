@@ -475,7 +475,8 @@ export default function App({ random = Math.random }: AppProps) {
             <p className="board-help" id="board-help">
               <span aria-hidden="true">⌨</span>
               {flagMode
-                ? "Flag mode on · tap a covered tile to flag it · F/right-click also flags"
+                ? "Flag mode on · tap a covered tile to flag it · arrow keys move · " +
+                  "Enter/Space flags · F/right-click also flags"
                 : "Tap a covered tile to reveal · arrow keys move · Enter/Space reveals · F/right-click flags"}
             </p>
           </div>
